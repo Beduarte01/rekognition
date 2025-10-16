@@ -1,0 +1,26 @@
+{
+  "scopeRoots": [
+    "src/app/pages",
+    "src/app/components",
+    "src/app/features",
+    "src/app/modules",
+    "src/app/containers/**",
+    "src/app/services/**",
+    "apps/*",
+    "libs/*"
+  ],
+  "splitTypesWithinScope": true,
+  "ignore": [
+    "dist/**",
+    "build/**",
+    "coverage/**",
+    "**/*.snap",
+    "**/.cache/**",
+    "**/*.map"
+  ],
+  "conventional": true,
+  "defaultTypeByFolder": {
+    "services": "feat"
+  },
+  "lockfiles": "auto"
+}

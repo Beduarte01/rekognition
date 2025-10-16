@@ -1,0 +1,8 @@
+{
+    "aws_region": "us-east-1",
+    "min_confidence": 75.0,
+    "max_labels": 10,
+    "images_path": "images/cc/",
+    "reference_path": "reference/cc/",
+    "results_path": "results/cc/"
+}

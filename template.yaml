@@ -1,0 +1,92 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Rekognition Proctoring MVP
+
+Parameters:
+  BucketName:
+    Type: String
+  ProctoringWebhookUrl:
+    Type: String
+    Default: ""
+  DynamoTableName:
+    Type: String
+    Default: "ProctoringResults"
+
+Resources:
+  ImagesBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref BucketName
+      NotificationConfiguration:
+        LambdaConfigurations:
+          - Event: s3:ObjectCreated:*
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: prefix
+                    Value: images/
+                  - Name: suffix
+                    Value: .jpg
+            Function: !GetAtt RekognitionFn.Arn
+  RekognitionFnPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref RekognitionFn
+      Principal: s3.amazonaws.com
+      SourceArn: !GetAtt ImagesBucket.Arn
+
+  ProctoringTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Ref DynamoTableName
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: pk
+          AttributeType: S
+        - AttributeName: sk
+          AttributeType: S
+      KeySchema:
+        - AttributeName: pk
+          KeyType: HASH
+        - AttributeName: sk
+          KeyType: RANGE
+
+  RekognitionFn:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: handler.handler
+      Runtime: python3.12
+      Timeout: 20
+      MemorySize: 512
+      Environment:
+        Variables:
+          AWS_REGION: us-east-1
+          MIN_CONFIDENCE: 75
+          MAX_LABELS: 10
+          RESULTS_PREFIX: results/
+          IMAGES_PREFIX: images/
+          REFERENCE_PREFIX: reference/
+          PROCTORING_WEBHOOK_URL: !Ref ProctoringWebhookUrl
+          DDB_TABLE: !Ref DynamoTableName
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - rekognition:DetectLabels
+                - rekognition:DetectFaces
+                - rekognition:CompareFaces
+              Resource: "*"
+            - Effect: Allow
+              Action:
+                - s3:GetObject
+                - s3:PutObject
+              Resource:
+                - !Sub arn:aws:s3:::${BucketName}/images/*
+                - !Sub arn:aws:s3:::${BucketName}/reference/*
+                - !Sub arn:aws:s3:::${BucketName}/results/*
+            - Effect: Allow
+              Action:
+                - dynamodb:PutItem
+              Resource: !GetAtt ProctoringTable.Arn

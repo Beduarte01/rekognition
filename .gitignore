@@ -1,0 +1,11 @@
+# ignorar
+__pycache__/
+
+# ignorar solo contenido, las carpetas se mantienen
+images/*
+reference/*
+results/*
+
+# no ignorar
+!.gitignore
+!.gitkeep
