@@ -1,3 +1,5 @@
-#pip install -r requirements.txt
-
+# AWS SDK para Python
 boto3
+
+# Cargar variables de entorno en local_tester.py
+python-dotenv

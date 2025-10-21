@@ -1,11 +1,70 @@
-# ignorar
+# Python
 __pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
 
-# ignorar solo contenido, las carpetas se mantienen
-images/*
-reference/*
-results/*
+# AWS SAM
+.aws-sam/
+samconfig.toml
 
-# no ignorar
-!.gitignore
-!.gitkeep
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Testing y datos locales
+images/
+reference/
+result/
+results/
+documentation/
+*.jpg
+*.jpeg
+*.png
+*.json.bak
+test_*.json
+
+# Archivos de desarrollo local (no necesarios en Lambda)
+main.py
+config.json
+localUtils.py
+
+# Logs
+*.log
+logs/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Backups
+*.bak
+backup_*/

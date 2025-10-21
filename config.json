@@ -1,9 +1,0 @@
-{
-    "aws_region": "us-east-1",
-    "min_confidence": 75.0,
-    "max_labels": 10,
-    "images_path": "images/jb/",
-    "reference_path": "reference/jb/",
-    "results_path": "results/jb/",
-    "difficulty": 1
-}
