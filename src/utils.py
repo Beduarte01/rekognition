@@ -19,7 +19,8 @@ def _detect_labels(image_bytes, max_labels=10, min_confidence=75.0):
         MinConfidence=min_confidence
     )
 
-def validate_image_bytes(image_bytes: bytes, ref_bytes: bytes, min_confidence=75.0, max_labels=10, last_face_bbox=None):
+# def validate_image_bytes(image_bytes: bytes, ref_bytes: bytes, min_confidence=75.0, max_labels=10, last_face_bbox=None):
+def validate_image_bytes(image_bytes, ref_bytes, min_confidence=75.0, max_labels=10):
     result = {"status": "OK", "details": []}
 
     labels = _detect_labels(image_bytes, max_labels=max_labels, min_confidence=min_confidence)
